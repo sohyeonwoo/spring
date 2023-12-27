@@ -15,7 +15,7 @@
 </head>
 <body>
 <section>
-    <h1><a href="/">NOTICE</a></h1>
+    <h1><a href="index">NOTICE</a></h1>
     <div class="wrapper">
       <form action="bList" name="search" method="get">
         <select name="category" id="category">

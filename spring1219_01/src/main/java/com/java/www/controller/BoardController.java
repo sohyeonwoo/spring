@@ -54,6 +54,7 @@ public class BoardController {
 		return "board/bList";
 	}// 게시글 전체 가져오기 // bList
 	
+	
 	//게시글 1개 가져오기
 	@GetMapping("board/bView")
 	public String bView(@RequestParam(defaultValue = "1")int bno,Model model) {

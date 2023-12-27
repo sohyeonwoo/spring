@@ -20,7 +20,7 @@
 	}else{
 		alert("로그인 실패다 바보야야야야");
 		
-		location.href="member/login";
+		location.href="login";
 	}
 </script>
 
