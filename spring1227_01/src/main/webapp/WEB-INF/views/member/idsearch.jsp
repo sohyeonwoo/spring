@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +15,7 @@
 <link rel="stylesheet" type="text/css" href="../css/reset.css?v=Y" />
 <link rel="stylesheet" type="text/css" href="../css/layout.css?v=Y" />
 <link rel="stylesheet" type="text/css" href="../css/content.css?v=Y" />
-<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="../js/top_navi.js"></script>
 <script type="text/javascript" src="../js/left_navi.js"></script>
 <script type="text/javascript" src="../js/main.js"></script>
@@ -208,6 +213,7 @@ $(document).ready(function() {
 
 
 			<!-- contents -->
+			<form action="idsearch" method="post" name="checkFrm" id=checkFrm>
 			<div id="contents">
 				<div id="member">
 					<h2><strong>아이디/비밀번호 찾기</strong><span>회원님께서 가입하신 아이디와 비밀번호를 찾아드립니다.</span></h2>
@@ -215,34 +221,98 @@ $(document).ready(function() {
 					<div class="informbox">
 						<div class="inform">
 							<ul>
-								<li><input type="text" class="nameType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='nameType'}else {this.className='mfocusnot'}" style="ime-mode:inactive;" /></li>
-								<li><input type="password" class="emailType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='emailType'}else {this.className='mfocusnot'}" style="ime-mode:inactive;" /></li>
+								<li><input type="text" class="nameType" name="name" id="name" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='nameType'}else {this.className='mfocusnot'}" style="ime-mode:inactive;" /></li>
+								<li><input type="text" class="emailType" name="email" id="email" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='emailType'}else {this.className='mfocusnot'}" style="ime-mode:inactive;" /></li>
 							</ul>
 
-							<div class="btn"><a href="#" class="gbtn">아이디 찾기</a></div>
+							<div class="btn" ><a href="#" class="gbtn" id="idcheck" name="idcheck">아이디 찾기</a></div>
 						</div>
 					</div>
-
+					
 
 
 					<h3>비밀번호 찾기</h3>
 					<div class="informbox">
 						<div class="inform">
 							<ul>
-								<li><input type="text" class="loginType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='loginType'}else {this.className='mfocusnot'}" /></li>
-								<li><input type="text" class="emailType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='emailType'}else {this.className='mfocusnot'}" /></li>
+								<li><input type="text" id="id" class="loginType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='loginType'}else {this.className='mfocusnot'}" /></li>
+								<li><input type="text" id="email" class="emailType" onfocus="this.className='mfocus'" onblur="if (this.value.length==0) {this.className='emailType'}else {this.className='mfocusnot'}" /></li>
 							</ul>
 
-							<div class="btn"><a href="#" class="gbtn">비밀번호 찾기</a></div>
+							<div class="btn"><a id="pwBtn" class="gbtn c_pointer" >비밀번호 찾기</a></div>
 						</div>
 					</div>
-
+	
 
 					<p class="alert">쟈뎅 온라인 쇼핑몰에서는 2012년 8월 18일로 시행되는 정보통신망 이용 촉진 및 정보 보호 등에 관한 법률 “주민등록번호의 <span>사용 제한”과 관련하여 주민등록번호를 수집하지 않습니다.</span></p>
 
 				</div>
 			</div>
+			</form>
 			<!-- //contents -->
+			<script>
+			$(function(){
+//아이디 찾기			
+				$("#idcheck").click(function(){
+					alert("아이디 찾기");
+					
+				//	checkFrm.submit();
+//아이디 찾기 ajax
+				$.ajax({
+							url:"/member/idsearch",
+							data:{"name":name,"email":email},
+							type:"post",
+							dataType:"text",
+							success:function(data){
+								console.log(data);
+								if(data=="fail") {
+									alert("아이디가 존재하지 않습니다. 회원가입을 해주세요.");
+								}else {
+									alert("아이디를 찾았습니다.");
+									location.href="/member/id?id="+data;
+								}
+							},
+							error:function(){
+								alert("실패");
+							}
+						});
+				});
+				
+				
+				
+				
+				
+//비밀번호 찾기 
+				$("#pwBtn").click(function(){
+					alert("비밀번호 찾기");
+					let id = $("#id").val();
+					let email = $("#email").val();
+					
+					$.ajax({
+						url:"/member/pwsearch",
+						data:{"id":id,"email":email},   //보내는 데이터
+						type:"post",                    //보내는 데이터 방법
+						dataType:"text",                //받는 데이터 방법
+						success:function(data){
+							if(data == "success"){
+							alert("메일이 발송되었습니다.");
+							}else{
+								alert("아이디 또는 이메일 주소가 틀립니다.");
+							console.log(data);
+							}
+						},
+						error:function(){
+							alert("실패");
+						}
+						
+						
+					});
+					
+				})
+				
+			});
+	
+			</script>
 
 
 		</div>

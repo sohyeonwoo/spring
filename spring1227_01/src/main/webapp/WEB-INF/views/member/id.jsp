@@ -1,9 +1,15 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <title> ID 찾기 발송 </title>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 
 </head>
@@ -25,18 +31,27 @@
 	<td style="width:700px;height:179px;padding:0;margin:0;vertical-align:top;">
 		<table width="618" height="177" cellpadding="0" cellspacing="0" align="center" style="margin:0 0 0 40px;border:1px #d9d9d9 solid;">
 		<tr>
+		<c:if test="${dto2.id!=null }">
 			<td style="width:618px;height:177px;padding:0;margin:0;vertical-align:top;font-size:0;line-height:0;background:#f9f9f9;">
 				<p style="width:620px;margin:30px 0 0 0;padding:0;text-align:center;"><img src="../images/email/img_txt_id02.jpg" alt="쟈뎅샵에서 ID찾기를 요청하셨습니다." /></p>
-				<p style="width:620px;margin:30px 0 0 0;padding:0;text-align:center;color:#666666;font-size:12px;line-height:1;"><strong>ID : <span style="color:#f7703c;line-height:1;">dasdw2341</span></strong></p>
+				<p style="width:620px;margin:30px 0 0 0;padding:0;text-align:center;color:#666666;font-size:12px;line-height:1;"><strong>ID : <span style="color:#f7703c;line-height:1;">${dto2.id}</span></strong></p>
 				<p style="width:620px;margin:30px 0 0 0;padding:0;text-align:center;color:#888888;font-size:12px;line-height:1.4;">쟈뎅샵에서는 고객님께 보다 나은 서비스를 제공하기 위해 항상 노력하고 있습니다.<br/>앞으로 많은 관심 부탁드립니다.</p>
 			</td>
+			</c:if>
+		<c:if test="${dto2.id==null }">
+			<td style="width:618px;height:177px;padding:0;margin:0;vertical-align:top;font-size:0;line-height:0;background:#f9f9f9;">
+				<p style="width:620px;margin:30px 0 0 0;padding:0;text-align:center;"><img src="../images/email/img_txt_id02.jpg" alt="쟈뎅샵에서 ID찾기를 요청하셨습니다." /></p>
+				<p style="width:620px;margin:30px 0 0 0;padding:0;text-align:center;color:#666666;font-size:12px;line-height:1;"><strong>없는 아이디 입니다 다시한번 확인해주세요. </strong></p>
+				<p style="width:620px;margin:30px 0 0 0;padding:0;text-align:center;color:#888888;font-size:12px;line-height:1.4;">쟈뎅샵에서는 고객님께 보다 나은 서비스를 제공하기 위해 항상 노력하고 있습니다.<br/>앞으로 많은 관심 부탁드립니다.</p>
+			</td>
+			</c:if>
 		</tr>
 		</table>	
 	</td>
 </tr>
 <tr>
 	<td style="width:700px;height:120px;padding:0;margin:0;vertical-align:top;">
-		<p style="width:700px;margin:30px 0 50px 0;text-align:center;"><a href="#"><img src="../images/email/btn_jardin.jpg" alt="JARDIN 바로가기" /></a></p>
+		<p style="width:700px;margin:30px 0 50px 0;text-align:center;"><a href="/"><img src="../images/email/btn_jardin.jpg" alt="JARDIN 바로가기" /></a></p>
 	</td>
 </tr>
 <tr>

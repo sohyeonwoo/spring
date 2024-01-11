@@ -1,8 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %> 
 <!DOCTYPE html>
 <html>
 <head>
 <title> JARDIN SHOP </title>
 <meta charset="UTF-8" />
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="description" content="JARDIN SHOP" />
 <meta name="keywords" content="JARDIN SHOP" />
@@ -214,9 +220,10 @@ $(document).ready(function() {
 					
 					<!-- STEP -->
 					<div class="stepWrap">
-						<div class="step">
+						<div class="step stepon">
 							<p class="web">STEP 01</p>
-							<p class="txt">실명확인</p>							
+							<p class="txt">실명확인</p>
+							<p class="ck"><img src="../images/bg/bg_step.png" alt="현재위치" /></p>
 						</div>
 
 						<div class="step">
@@ -229,31 +236,99 @@ $(document).ready(function() {
 							<p class="txt"><span>회원정보</span> <span>입력</span></p>
 						</div>
 
-						<div class="step stepon">
+						<div class="step">
 							<p class="web">STEP 04</p>
 							<p class="txt"><span>회원가입</span> <span>완료</span></p>
-							<p class="ck"><img src="../images/bg/bg_step.png" alt="현재위치" /></p>
 						</div>
 					</div>
 					<!-- //STEP -->
-					
-					<div class="celebrate">	
-						<div class="img"><img src="../images/txt/txt_celebrate01.png" alt="JARDIN THECOFFEE CERATOR, SINCE 1984" /></div>
-						<p class="thx">감사합니다. <span>회원가입이 완료되었습니다.</span></p>
-						<p class="txt">
-							저희 가족이 되어주셔서 감사합니다.<br/>
-							가입 시 입력하신 이메일로 가입 완료 메일이 전송되었습니다.<br/>
-							언제나 고객님께 즐겁고 소중한 시간이 되도록 최선을 다 하겠습니다.<br/><br/>
-							가입 시 입력하신 정보는 마이페이지에서 수정하실 수 있습니다.
-						</p>
+						
+
+					<div class="alertBox">
+						<ul>
+							<li>회원님의 실명확인 및 가입 여부를 확인하는 절차입니다.</li>
+							<li>회원님의 개인 정보 보호를 위해 실명확인을 실시하고 있습니다.</li>
+						</ul>
 					</div>
+
+					<script>
+					$(function(){
+						let temp = 0;
+						$(".nbtnMini2").click(function(){
+							alert("이메일 전송합니다.");
+							let email= $("#email").val();
+							alert(email);
+	//ajax 전송
+							$.ajax({
+								url:"/member/email",
+								type:"post",
+								data:{"email":email},
+								dataType:"text",
+								success:function(data){
+									alert("이메일이 발송되었습니다.");
+									console.log("이메일인증코드 : "+data);
+									temp=1;
+								},
+								error:function(){
+									alert("실패")
+								}
+							
+							});
+							
+						
+						});
+						//비밀번호 인증
+						$(".sbtnMini2").click(function(){
+							
+							//이메일 인증번호 발송을 했는지 체크 확인
+							if(temp==0){
+								alert("이메일 발송을 하셔야 비밀번호 인증이 가능합니다.");
+								$("#email").focus();
+								return false;
+							}
+							alert("비밀번호 인증을 체크합니다.");
+							let pwcode = $("#pwcode").val();
+							$.ajax({
+								url:"/member/pwChk",
+								data:{"pwcode":pwcode},
+								type:"post",
+								dataType:"text",
+								success:function(data){
+									alert("step01 인증코드 확인되었습니다.");
+									if(data=="success"){
+										temp=0;
+										location.href="/member/step02";
+									}else{
+										alert("인증코드가 일치하지 않습니다.")
+										return false;
+									}
+								},
+								error:function(){
+									alert("실패")
+								}
+							
+							});
+							
+							
+							
+							
+							
+							
+							
+							
+						})//sbtnMini2
+					});
+					</script>
 
 					<!-- Btn Area -->
 					<div class="btnArea">
-						<div class="bCenter">
+						<div class="bCenter2">
 							<ul>
-								<li><a href="#" class="nbtnbig">메인으로</a></li>
-								<li><a href="#" class="sbtnMini">로그인</a></li>
+								<li class="r10"><input type="text" id="email" class="w200" /></li>
+								<li><a href="#" class="nbtnMini2">이메일발송</a></li>
+								<li class="w201"></li>
+								<li class="r10"><input type="text" id="pwcode" class="w200" /></li>
+								<li><a  class="sbtnMini2 c_pointer">비밀번호 인증</a></li>
 							</ul>
 						</div>
 					</div>
